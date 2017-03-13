@@ -9,16 +9,23 @@ namespace TasksManager.Entities
 {
     public class Trainee : BaseEntity
     {
+
         public string FirstName { set; get; }
         public string LastName { set; get; }
         public string ExcelDataPath { set; get; }
         public string FileName { get; internal set; }
+        public object NumberOfDaysJob { get; internal set; }
+        public object NumberOfTask { get; internal set; }
 
         public override string ToString()
         {
-            return this.FirstName + " " + LastName;
+            
+            return this.FirstName + " " + LastName + "(Tasks = "+ NumberOfTask + " , Days = "+ NumberOfDaysJob + ")";
 
         }
 
+        
+
+      
     }
 }

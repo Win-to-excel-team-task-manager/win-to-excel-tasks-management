@@ -12,15 +12,14 @@ namespace TasksManager.BAL
     /// <summary>
     /// Task Project Management
     /// </summary>
-    class TaskProjectBLO : EntityBLO<TaskProject>
+    public class TaskProjectBLO : EntityBLO<TaskProject>
     {
       
         public TaskProjectBLO()
         {
-            
             string DirectoryPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            string FileFullName = DirectoryPath + "/" + nameof(TaskProject);
-            this.EntityDAO = new TaskProjectDAO(FileFullName);
+            string FullFilePath = Path.Combine(DirectoryPath, nameof(TaskProject) + ".xlsx");
+            this.EntityDAO = new TaskProjectDAO(FullFilePath);
         }
         public List<TaskProject> GetData()
         {

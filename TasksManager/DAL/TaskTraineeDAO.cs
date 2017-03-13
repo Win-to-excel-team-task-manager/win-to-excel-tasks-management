@@ -11,7 +11,7 @@ namespace TasksManager.DAL
     /// <summary>
     /// Trainee Task Manager
     /// </summary>
-    public class TaskTraineeDAO : EntityExcelDAO<TaskTrainee>
+    public class TaskTraineeDAO : EntityDAO<TaskTrainee>
     {
         public TaskTraineeDAO(string FileFullPath) : base(FileFullPath)
         {

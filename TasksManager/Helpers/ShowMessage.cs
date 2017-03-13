@@ -28,10 +28,15 @@ namespace TasksManager.Helpers
             String msg = "";
             foreach (var item in GetMessages())
             {
-                msg += item + "\n";
+                msg = item + "\n";
             }
             return msg;
 
+        }
+
+        public static void ShowMessageIdExist()
+        {
+           
         }
 
 

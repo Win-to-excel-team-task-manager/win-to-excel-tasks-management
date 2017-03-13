@@ -17,8 +17,6 @@ namespace TasksManager.BAL
     {
         public TraineeBLO():base()
         {
-            
-
             // [Role] The full path is the execution directory
             string FullFilePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             FullFilePath += "/Stagiaires/";
@@ -26,9 +24,23 @@ namespace TasksManager.BAL
             this.EntityDAO = new TraineeDAO(FullFilePath);
         }
 
+        /// <summary>
+        /// Get Trainee 
+        /// Order By Number of Tasks and Minimum Number of Days
+        /// </summary>
+        /// <returns>List of Trainee</returns>
         public List<Trainee> GetData()
         {
-            return EntityDAO.GetData().Cast<Trainee>().ToList();
+            List<Trainee> list_trainee = EntityDAO.GetData().Cast<Trainee>().ToList();
+
+            /// Read Tasks
+            foreach (Trainee trainne in list_trainee)
+            {
+                TaskTraineeBLO taskTraineeBLO = new TaskTraineeBLO(trainne.FileName);
+                trainne.NumberOfDaysJob = taskTraineeBLO.GetNumberOfDaysJob();
+                trainne.NumberOfTask = taskTraineeBLO.GetNumberOfTask();
+            }
+            return list_trainee.OrderByDescending(t => t.NumberOfTask).ToList();
         }
     }
 }

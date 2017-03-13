@@ -8,5 +8,16 @@ namespace TasksManager.Entities
 {
     public class BaseEntity
     {
+        /// <summary>
+        /// Errors of Trainne 
+        /// </summary>
+        public Dictionary<CategoryError, string> Errors = new Dictionary<CategoryError, string>();
+
+        public enum CategoryError
+        {
+            DefaultError,
+            ExcelFileError,
+            TaksError
+        }
     }
 }

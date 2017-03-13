@@ -8,11 +8,11 @@ using TasksManager.Entities;
 
 namespace TasksManager.BAL
 {
-    public class TraineeTaskBLO : EntityBLO<TaskTrainee>
+    public class TaskTraineeBLO : EntityBLO<TaskTrainee>
     {
         private string fileName;
 
-        public TraineeTaskBLO(string fileName)
+        public TaskTraineeBLO(string fileName)
         {
             string DirectoryPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             string FileFullPath = DirectoryPath + "/Stagiaires/" + fileName;
@@ -24,6 +24,16 @@ namespace TasksManager.BAL
         public List<TaskTrainee> GetData()
         {
             return this.EntityDAO.GetData().Cast<TaskTrainee>().ToList();
+        }
+
+        public object GetNumberOfDaysJob()
+        {
+            return this.EntityDAO.GetData().Cast<TaskTrainee>().Sum(t => t.NumberOfDays);
+        }
+
+        public object GetNumberOfTask()
+        {
+            return this.EntityDAO.GetData().Cast<TaskTrainee>().Where(t => t.NumberOfDays > 0).Count();
         }
     }
 }
