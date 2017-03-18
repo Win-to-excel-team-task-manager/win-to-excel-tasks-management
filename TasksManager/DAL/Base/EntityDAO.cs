@@ -37,81 +37,88 @@ namespace TasksManager.DAL
         /// </summary>
         protected void ReadData()
         {
+
             
-            FileInfo inputFile = new FileInfo(this.FileFullPath);
+                FileInfo inputFile = new FileInfo(this.FileFullPath);
 
-            // Test if File Exit
-            if (!inputFile.Exists) throw new GwinFileNotExistException("The file " + this.FileFullPath + " not exist");
-
-
-            using (FastExcel.FastExcel fastExcel = new FastExcel.FastExcel(inputFile, true))
-            {
-                Console.WriteLine("Reading data (Read Only Access) still needs enumerating...");
-                Worksheet worksheet = fastExcel.Read(1, 1);
-
-                // Cleat List of Entities
-                ListEntities.Clear();
-
-                // Read Rows
-                worksheet.Read();
-                Row[] rows = worksheet.Rows.ToArray();
-
-                // Read PropertyInfo
-                PropertyInfo[] Properties = typeof(T).GetProperties();
+                // Test if File Exit
+                if (!inputFile.Exists) throw new GwinFileNotExistException("The file " + this.FileFullPath + " not exist");
 
 
-                // Create Entity for each Row
-                for (int i = 1; i < rows.Count(); i++)
+                using (FastExcel.FastExcel fastExcel = new FastExcel.FastExcel(inputFile, true))
                 {
-                    Row row = rows[i];
+                    Console.WriteLine("Reading data (Read Only Access) still needs enumerating...");
+                    Worksheet worksheet = fastExcel.Read(1, 1);
 
-                    // Read Values, 
-                    object[] values = new object[Properties.Count()];
-                    foreach (Cell cell in row.Cells)
+                    // Cleat List of Entities
+                    ListEntities.Clear();
+
+                    // Read Rows
+                    worksheet.Read();
+                    Row[] rows = worksheet.Rows.ToArray();
+
+                    // Read PropertyInfo
+                    PropertyInfo[] Properties = typeof(T).GetProperties();
+
+
+                    // Create Entity for each Row
+                    for (int i = 1; i < rows.Count(); i++)
                     {
-                        // Excel Cell with empty Data Not exist in Cells
-                        if (cell.ColumnNumber <= Properties.Count())
-                            values[cell.ColumnNumber - 1] = cell.Value;
-                    }
+                        Row row = rows[i];
 
-                    // Create Entity Instance
-                    T Entity = Activator.CreateInstance<T>();
-
-                    // Write Value in Entity
-
-                    int index_column = 0;
-                    foreach (PropertyInfo item in Properties)
-                    {
-
-
-                        object value = values[index_column];
-                        try
+                        // Read Values, 
+                        object[] values = new object[Properties.Count()];
+                        foreach (Cell cell in row.Cells)
                         {
-                            if (value != null)
+                            // Excel Cell with empty Data Not exist in Cells
+                            if (cell.ColumnNumber <= Properties.Count())
+                                values[cell.ColumnNumber - 1] = cell.Value;
+                        }
+
+                        // Create Entity Instance
+                        T Entity = Activator.CreateInstance<T>();
+
+                        // Write Value in Entity
+
+                        int index_column = 0;
+                        foreach (PropertyInfo item in Properties)
+                        {
+
+
+                            object value = values[index_column];
+                            try
                             {
-                                // Fix DateTime convert from Excel to C#
-                                if (item.PropertyType == typeof(DateTime))
-                                    value = FromExcelSerialDate(Convert.ToInt32(value));
-                                item.SetValue(Entity, Convert.ChangeType(value, item.PropertyType));
+                                if (value != null)
+                                {
+                                    // Fix DateTime convert from Excel to C#
+                                    if (item.PropertyType == typeof(DateTime))
+                                        value = FromExcelSerialDate(Convert.ToInt32(value));
+                                    item.SetValue(Entity, Convert.ChangeType(value, item.PropertyType));
+                                }
+
+
+                            }
+                            catch (Exception e)
+                            {
+                                string message = "Can not read the value " + value + "as " + item.PropertyType;
+                                Entity.AddError(BaseEntity.CategoryError.ExcelFileError, message);
                             }
 
 
-                        }
-                        catch (Exception e)
-                        {
-                            string message = "Can not read the value " + value + "as " + item.PropertyType;
-                            Entity.Errors.Add(BaseEntity.CategoryError.ExcelFileError, message);
+                            index_column++;
                         }
 
-
-                        index_column++;
+                        ListEntities.Add(Entity);
                     }
 
-                    ListEntities.Add(Entity);
+
                 }
 
+           
+            
 
-            }
+
+
 
 
 

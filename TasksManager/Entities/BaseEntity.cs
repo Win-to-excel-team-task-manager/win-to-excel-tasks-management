@@ -13,6 +13,13 @@ namespace TasksManager.Entities
         /// </summary>
         public Dictionary<CategoryError, string> Errors = new Dictionary<CategoryError, string>();
 
+        public void AddError(CategoryError CategoryError, string message)
+        {
+            if (!Errors.ContainsKey(CategoryError))
+                Errors.Add(CategoryError, message);
+        }
+
+
         public enum CategoryError
         {
             DefaultError,

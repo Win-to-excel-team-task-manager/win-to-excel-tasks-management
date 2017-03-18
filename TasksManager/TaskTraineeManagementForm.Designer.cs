@@ -232,6 +232,7 @@
             this.listBoxTaskProject.TabIndex = 1;
             this.listBoxTaskProject.ValueMember = "Code";
             this.listBoxTaskProject.Click += new System.EventHandler(this.listBoxTaskProject_Click);
+            this.listBoxTaskProject.SelectedIndexChanged += new System.EventHandler(this.listBoxTaskProject_SelectedIndexChanged);
             // 
             // taskProjectBindingSource1
             // 

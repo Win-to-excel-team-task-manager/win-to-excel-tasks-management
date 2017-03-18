@@ -111,7 +111,7 @@ namespace TasksManager
         private void taskTrainneeBindingSource_PositionChanged(object sender, EventArgs e)
         {
             TaskTrainee taskTrainee =(TaskTrainee) TaskTraineeBindingSource.Current;
-            if(taskTrainee != null)
+            if(taskTrainee != null && taskTrainee.Title != null)
             listBoxTaskProject.SelectedValue = taskTrainee.Title;
 
         }
@@ -137,9 +137,7 @@ namespace TasksManager
 
         private void listBoxTaskProject_Click(object sender, EventArgs e)
         {
-            TaskProject taskProject =(TaskProject) listBoxTaskProject.SelectedItem;
-            if (taskProject != null)
-                taskProjectShowUC1.ShowTaskProject(taskProject);
+           
         }
 
         private void dataGridViewTrainees_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -162,6 +160,13 @@ namespace TasksManager
         private void dataGridViewTrainees_DataSourceChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void listBoxTaskProject_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TaskProject taskProject = (TaskProject)listBoxTaskProject.SelectedItem;
+            if (taskProject != null)
+                taskProjectShowUC1.ShowTaskProject(taskProject);
         }
     }
 }

@@ -55,6 +55,7 @@
     <Compile Include="BAL\TraineeBLO.cs" />
     <Compile Include="BAL\TraineeTaskBLO.cs" />
     <Compile Include="DAL\Base\EntityDAO.cs" />
+    <Compile Include="DAL\Base\GwinDocumentFormatException.cs" />
     <Compile Include="Exceptions\GwinFileNotExistException.cs" />
     <Compile Include="DAL\Base\IEtityDAO.cs" />
     <Compile Include="DAL\TaskProjectDAO.cs" />
